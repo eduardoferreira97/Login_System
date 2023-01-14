@@ -1,6 +1,9 @@
-from django.urls import path
-from . import views
+from authors import views
+from django.urls import include, path
+
+app_name = 'authors'
 
 urlpatterns = [
-    path('' ,views.register, name="index"),
+    path('registro/' ,views.registro, name="register"),
+    path('registro/criar/' ,views.criar, name="create"),
 ]

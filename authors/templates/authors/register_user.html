@@ -1,0 +1,29 @@
+{% extends 'authors/base.html' %}
+
+
+{% block content %}
+<div class="main-content center container">
+    <h2>Registro</h2>
+</div>
+
+<div class="main-content container">
+    <form action="{% url 'authors:create' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-content form-content-grid">
+            {% for form in forms %}
+            <div class="form-group">
+                <field for="{{form.id_for_label}}">{{form.label}}</field>
+                {{form}}
+                {% if form.help_text %}
+                <p class="help-text">{{form.help_text}}</p>
+                {% endif %}
+                {{form.errors}}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            <button type="submit">Enviar</button>
+        </div>
+    </form>
+</div>
+{% endblock content%}
