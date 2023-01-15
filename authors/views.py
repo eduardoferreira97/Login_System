@@ -5,13 +5,13 @@ from django.shortcuts import redirect, render
 from .forms import RegisterForm
 
 
-def registro(request):
+def register_view(request):
     register_form_data = request.session.get('register_form_data', None)
     forms = RegisterForm(register_form_data)
     return render(request, "authors/register_user.html", {'forms': forms, })
 
 
-def criar(request):
+def register_create(request):
     if not request.POST:
         raise Http404()
 
@@ -28,3 +28,11 @@ def criar(request):
         del (request.session['register_form_data'])
 
     return redirect('authors:register')
+
+
+def login_view(request):
+    return render(request, 'authors/login.html')
+
+
+def login_create(request):
+    return render(request, 'authors/login.html')
