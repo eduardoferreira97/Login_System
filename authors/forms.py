@@ -14,15 +14,17 @@ def add_attr(field, attr_name, attr_new_val):
 def add_placeholder(field, placeholder_val):
     add_attr(field, 'placeholder', placeholder_val)
 
+# Verificação de senha
+
 
 def strong_password(password):
     regex = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$')
 
     if not regex.match(password):
         raise ValidationError((
-            'A senha precisa ter uma letra maiúscula '
-            'uma letra minúscula e um número.'
-            'Precisa ter no mínimo 8 caracteres'
+            'A senha precisa ter uma letra maiúscula, '
+            'uma letra minúscula e números.'
+            'Precisa ter no mínimo 8 caracteres.'
         ),
             code='Invalid'
         )
@@ -62,8 +64,16 @@ class RegisterForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'password',]
 
-    # validação do campo, caso ele entre na condição, ele envia um alerta
+        labels = {
+            'username': 'Usuário',
+            'first_name': 'Nome',
+            'last_name': 'Sobrenome',
+            'email': 'E-mail',
+            'password': 'Senha',
+            'confirm_password': 'Confirmar senha',
+        }
 
+    # validação do campo, caso ele entre na condição, ele envia um alerta
     def clean_password(self):
 
         data = self.cleaned_data.get('password')
@@ -89,3 +99,13 @@ class RegisterForm(forms.ModelForm):
                 'password': 'As senhas precisam se iguais',
                 'confirm_password': 'As senhas precisam se iguais'
             })
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '')
+        exists = User.objects.filter(email=email).exists()
+
+        if exists:
+            raise ValidationError(
+                'O e-mail informado já está em uso. Tente outro')
+
+        return email
