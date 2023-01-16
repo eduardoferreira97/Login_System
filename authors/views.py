@@ -1,8 +1,10 @@
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
 from django.http import Http404
 from django.shortcuts import redirect, render
+from django.urls import reverse
 
-from .forms import RegisterForm
+from .forms import LoginForm, RegisterForm
 
 
 def register_view(request):
@@ -31,8 +33,31 @@ def register_create(request):
 
 
 def login_view(request):
-    return render(request, 'authors/login.html')
+    form = LoginForm()
+    return render(request, 'authors/login.html', {
+        'forms': form,
+        'form_action': reverse('authors:login_create')
+    })
 
 
 def login_create(request):
-    return render(request, 'authors/login.html')
+
+    if not request.POST:
+        raise Http404()
+
+    form = LoginForm(request.POST)
+    login_url = reverse('authors:login')
+
+    if form.is_valid():
+        is_authenticated = authenticate(
+            username=form.cleaned_data.get('username', ''),
+            password=form.cleaned_data.get('password', ''),
+        )
+        if is_authenticated:
+            messages.success(request, 'Você está logado')
+            return redirect(login_url)
+
+        messages.error(request, 'Credenciais inválidas')
+        return redirect(login_url)
+    messages.error(request, 'Erro para validar os dados')
+    return redirect(login_url)
