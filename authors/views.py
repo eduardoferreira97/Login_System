@@ -28,6 +28,7 @@ def register_create(request):
         messages.success(request, 'Sua conta foi criada, faça login')
 
         del (request.session['register_form_data'])
+        return redirect(reverse('authors:login'))
 
     return redirect('authors:register')
 
@@ -49,15 +50,18 @@ def login_create(request):
     login_url = reverse('authors:login')
 
     if form.is_valid():
-        is_authenticated = authenticate(
+
+        authenticate_user = authenticate(
+
             username=form.cleaned_data.get('username', ''),
             password=form.cleaned_data.get('password', ''),
         )
-        if is_authenticated:
-            messages.success(request, 'Você está logado')
-            return redirect(login_url)
 
+        if authenticate_user is not None:
+            messages.success(request, 'Você está logado')
+            login(request, authenticate_user)
+            return redirect(login_url)
         messages.error(request, 'Credenciais inválidas')
         return redirect(login_url)
-    messages.error(request, 'Erro para validar os dados')
+    messages.error(request, 'Erro ao validar os dados')
     return redirect(login_url)
