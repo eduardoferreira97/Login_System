@@ -10,7 +10,9 @@ from .forms import LoginForm, RegisterForm
 def register_view(request):
     register_form_data = request.session.get('register_form_data', None)
     forms = RegisterForm(register_form_data)
-    return render(request, "authors/register_user.html", {'forms': forms, })
+    return render(request, "authors/register_user.html", {
+        'forms': forms,
+        'form_action': reverse('authors:register_create')})
 
 
 def register_create(request):
