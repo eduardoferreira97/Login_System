@@ -7,7 +7,9 @@
     <h2>Login</h2>
     {% if request.user.is_authenticated %}
     <p>
-        Você está logado como {{request.user.username}} 
+        Você está logado como {{request.user.username}}. 
+        Por favor,
+        <a href="{% url 'authors:logout' %}">clique aqui</a> para fazer logout. 
     </p>
     {% endif %}
 </div>

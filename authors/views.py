@@ -1,5 +1,6 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -31,6 +32,8 @@ def register_create(request):
 
         del (request.session['register_form_data'])
         return redirect(reverse('authors:login'))
+
+    messages.error(request, 'Erro ao criar a conta')
 
     return redirect('authors:register')
 
@@ -67,3 +70,9 @@ def login_create(request):
         return redirect(login_url)
     messages.error(request, 'Erro ao validar os dados')
     return redirect(login_url)
+
+
+@login_required(login_url='authors:login', redirect_field_name='next')
+def logout_view(request):
+    logout(request)
+    return redirect(reverse('authors:login'))
