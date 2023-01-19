@@ -2,6 +2,7 @@
 
 
 {% block content %}
+
 <div class="main-content center container">
     <h2>Registro</h2>
 </div>
@@ -9,7 +10,9 @@
 {% include 'authors/messages.html' %}
 
 {% include 'authors/form.html' %}
-<div>
-    Já possui conta? <a href="{% url 'authors:login' %}">Clique aqui</a> e fassa login.
+
+<div class="form-content form-content">
+    Já possui conta? <a href="{% url 'authors:login' %}">Clique aqui</a> e faça login.
 </div>
+
 {% endblock content%}

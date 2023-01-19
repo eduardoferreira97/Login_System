@@ -3,8 +3,10 @@
 {% block title %}Login{% endblock title %}
 
 {% block content %}
+
 <div class="main-content center container">
     <h2>Login</h2>
+
     {% if request.user.is_authenticated %}
     <div>
         Você está logado como {{request.user.username}}. 
@@ -16,13 +18,15 @@
         </form> para fazer logout. 
     </div>
     {% endif %}
+    
 </div>
 
 {% include 'authors/messages.html' %}
 
 {% include 'authors/form.html' %}
+
 {% if not request.user.is_authenticated %}
-<div>
+<div class="form-content form-content">
     Não possui conta? <a href="{% url 'authors:register' %}">Clique aqui</a> e cadastre-se.
 </div>
 {% endif %}

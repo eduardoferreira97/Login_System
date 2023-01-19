@@ -2,7 +2,9 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from utils.django_forms import add_placeholder, strong_password
+from utils.django_forms import (add_placeholder, strong_password, validate_len,
+                                validate_number, validate_symbol,
+                                validate_upper)
 
 
 class RegisterForm(forms.ModelForm):
@@ -21,18 +23,18 @@ class RegisterForm(forms.ModelForm):
         widget=forms.PasswordInput(
             attrs={'placeholder': 'Digite a sua senha'}),
         error_messages={'required': 'Senha não pode ser vazia'},
-        help_text=('A senha precisa ter uma letra maiúscula, '
-                   'uma letra minúscula e números.'
-                   'Precisa ter no mínimo 8 caracteres'),
-        validators=[strong_password]
+        # help_text=('A senha precisa ter uma letra maiúscula, '
+        #            'uma letra minúscula e números.'
+        #            'Precisa ter no mínimo 8 caracteres'),
+        validators=[validate_upper, validate_symbol,
+                    validate_number, strong_password, validate_len]
     )
 
     confirm_password = forms.CharField(
         required=True,
         widget=forms.PasswordInput(
             attrs={'placeholder': 'Confirme a sua senha'}),
-        error_messages={'required': 'Senha não pode ser vazia'},
-        help_text=('A senhas precisam ser iguais')
+        error_messages={'required': 'Senha não pode ser vazia'}
     )
 
     class Meta:
