@@ -9,16 +9,16 @@
 
     {% if request.user.is_authenticated %}
     <div>
-        Você está logado como {{request.user.username}}. 
+        Você está logado como {{request.user.username}}.
         Por favor,
         <form class="inline-form" action="{% url 'authors:logout' %}" method="POST">
             {% csrf_token %}
-           <input  type="hidden" name="username" value="{{request.user.username}}">
-           <button class="plainetext-button" type="submit"> clique aqui </button>
-        </form> para fazer logout. 
+            <input type="hidden" name="username" value="{{request.user.username}}">
+            <button class="plainetext-button" type="submit"> clique aqui </button>
+        </form> para fazer logout.
     </div>
     {% endif %}
-    
+
 </div>
 
 {% include 'authors/messages.html' %}
@@ -28,6 +28,9 @@
 {% if not request.user.is_authenticated %}
 <div class="form-content form-content">
     Não possui conta? <a href="{% url 'authors:register' %}">Clique aqui</a> e cadastre-se.
+</div>
+<div class="form-content form-content">
+    Esqueceu a senha? <a href="{% url 'password_reset' %}">Clique aqui</a>.
 </div>
 {% endif %}
 
