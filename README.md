@@ -30,4 +30,4 @@ Access the system at http://localhost:8000/.
 
 ## 📌 Contribution
 
-Contributions are welcome! Follow the contribution guidelines.
+Contributions are welcome!
